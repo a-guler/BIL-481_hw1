@@ -57,4 +57,3 @@ tasks.named('test') {
 task stage(dependsOn: ['shadowJar'])
 shadowJar.mustRunAfter clean
 
-task stage(dependsOn: ['clean', 'installDist'])
