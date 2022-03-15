@@ -29,6 +29,18 @@ public class App {
         }
         return false;
     }
+
+    public static ArrayList<Integer> change(ArrayList<Integer> source, int changeFrom, int changeTo){
+      System.out.println("inside change");
+      if(source == null)
+        return null;
+      for(int i = 0; i < source.size(); i++){
+        if(source.get(i) == changeFrom)
+          source.set(i,changeTo);
+      }  
+      return source;
+
+    }
     public static void main(String[] args) {
 
         int port = Integer.parseInt(System.getenv("PORT"));
@@ -36,12 +48,11 @@ public class App {
 
         // port(getHerokuAssignedPort());
 
-        get("/", (req, res) -> "Hello, World");
+        // get("/", (req, res) -> "Hello, World");
 
-        post("/compute", (req, res) -> {
-          //System.out.println(req.queryParams("input1"));
-          //System.out.println(req.queryParams("input2"));
-
+        post("/", (req, res) -> {
+        
+          
           String input1 = req.queryParams("input1");
           java.util.Scanner sc1 = new java.util.Scanner(input1);
           sc1.useDelimiter("[;\r\n]+");
@@ -52,21 +63,24 @@ public class App {
             inputList.add(value);
           }
           sc1.close();
-          System.out.println(inputList);
+          System.out.println("inputList:"+inputList);
 
 
           String input2 = req.queryParams("input2").replaceAll("\\s","");
           int input2AsInt = Integer.parseInt(input2);
 
-          boolean result = App.search(inputList, input2AsInt);
+          String input3 = req.queryParams("input3").replaceAll("\\s","");
+          int input3AsInt = Integer.parseInt(input3);
 
-          Map<String, Boolean> map = new HashMap<String, Boolean>();
+          inputList = change(inputList,input2AsInt,input3AsInt);
+          String result = inputList.toString();
+
+          Map<String, String> map = new HashMap<String, String>();
           map.put("result", result);
           return new ModelAndView(map, "compute.mustache");
         }, new MustacheTemplateEngine());
 
-
-        get("/compute",
+        get("/",
             (rq, rs) -> {
               Map<String, String> map = new HashMap<String, String>();
               map.put("result", "not computed yet!");
