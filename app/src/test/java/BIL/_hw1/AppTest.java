@@ -15,26 +15,27 @@ class AppTest {
     }
 
     @Test
-   public void testFound() {
+   public void testChanged() {
       ArrayList<Integer> array = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-      assertTrue(App.search(array, 4));
+      ArrayList<Integer> result = new ArrayList<>(Arrays.asList(1, 2, 3, 5));
+      assertEquals(App.change(array, 4, 5), result );
     }
 
     @Test
-    public void testNotFound() {
+    public void testNoChange() {
       ArrayList<Integer> array = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-      assertFalse(App.search(array, 5));
+      assertEquals(App.change(array, 5, 10),array);
     }
 
     @Test
     public void testEmptyArray() {
       ArrayList<Integer> array = new ArrayList<>();
-      assertFalse(App.search(array, 1));
+      assertEquals(App.change(array, 1,4),array);
     }
 
     @Test
     public void testNull() {
-      assertFalse(App.search(null, 1));
+      assertNull(App.change(null, 1,1));
     }
 
 }
