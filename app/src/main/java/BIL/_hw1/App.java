@@ -5,6 +5,7 @@ package BIL._hw1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.awt.geom.Point2D;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
@@ -20,33 +21,36 @@ public class App {
         return "Hello World!";
     }
 
-    public static boolean search(ArrayList<Integer> array, int e) {
-        System.out.println("inside search");
-        if (array == null) return false;
-  
-        for (int elt : array) {
-          if (elt == e) return true;
+
+    public static ArrayList<Point2D> calculateNearestEmergencies(ArrayList<Point2D> emergencyLocations,Point2D location, int closest){
+      if( emergencyLocations == null || emergencyLocations.size() == 0 )
+        return new ArrayList<Point2D>();  
+      
+      ArrayList<Double> distances = new ArrayList<Double>();
+        for(int i = 0; i<emergencyLocations.size();i++)
+          distances.add(location.distance(emergencyLocations.get(i)));
+
+
+        ArrayList<Point2D> closestEmergencies = new ArrayList<Point2D>(); 
+        int cap = closest;
+        if(closest > emergencyLocations.size())
+          cap = emergencyLocations.size(); 
+        for(int i =0; i<cap; i++){
+          int smallest = 0;
+          for(int j = 1; j<emergencyLocations.size(); j++){
+            if(distances.get(j) < distances.get(smallest))
+              smallest = j;
+          }
+          closestEmergencies.add(emergencyLocations.get(smallest));
+          distances.set(smallest,Double.MAX_VALUE);
         }
-        return false;
-    }
-
-    public static ArrayList<Integer> change(ArrayList<Integer> source, int changeFrom, int changeTo){
-      System.out.println("inside change");
-      if(source == null)
-        return null;
-      for(int i = 0; i < source.size(); i++){
-        if(source.get(i) == changeFrom)
-          source.set(i,changeTo);
-      }  
-      return source;
-
+      return closestEmergencies;
     }
     public static void main(String[] args) {
 
-        int port = Integer.parseInt(System.getenv("PORT"));
-        port(port);
+        // int port = Integer.parseInt(System.getenv("PORT"));
+        port(getHerokuAssignedPort());
 
-        // port(getHerokuAssignedPort());
 
         // get("/", (req, res) -> "Hello, World");
 
@@ -56,24 +60,36 @@ public class App {
           String input1 = req.queryParams("input1");
           java.util.Scanner sc1 = new java.util.Scanner(input1);
           sc1.useDelimiter("[;\r\n]+");
-          java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+          java.util.ArrayList<Point2D> inputList = new java.util.ArrayList<>();
           while (sc1.hasNext())
           {
-            int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
-            inputList.add(value);
+            java.util.Scanner sc2 = new java.util.Scanner(sc1.next().replaceAll("\\s",""));
+            sc2.useDelimiter(",");
+            Point2D point = new Point2D.Double(Double.parseDouble(sc2.next()),Double.parseDouble(sc2.next()));
+            System.out.println("X:"+point.getX()+" Y:" + point.getY());
+            inputList.add(point);
           }
           sc1.close();
-          System.out.println("inputList:"+inputList);
 
 
-          String input2 = req.queryParams("input2").replaceAll("\\s","");
-          int input2AsInt = Integer.parseInt(input2);
+
+          java.util.Scanner sc3 = new java.util.Scanner(req.queryParams("input2").replaceAll("\\s",""));
+          sc3.useDelimiter(",");
+          Point2D input2AsPoint2D = new Point2D.Double(Double.parseDouble(sc3.next()),Double.parseDouble(sc3.next()));
+          sc3.close();
+          System.out.println("Ambulance Location:"+input2AsPoint2D);
+          
 
           String input3 = req.queryParams("input3").replaceAll("\\s","");
           int input3AsInt = Integer.parseInt(input3);
+          System.out.println("input3:"+ input3AsInt);
 
-          inputList = change(inputList,input2AsInt,input3AsInt);
-          String result = inputList.toString();
+          inputList = calculateNearestEmergencies(inputList,input2AsPoint2D,input3AsInt);
+          String result = "";
+          for(Point2D emg:inputList){
+            result = result + "(" +emg.getX() + ","+ emg.getY() +") ";
+          }
+          System.out.println("result:"+result);
 
           Map<String, String> map = new HashMap<String, String>();
           map.put("result", result);
