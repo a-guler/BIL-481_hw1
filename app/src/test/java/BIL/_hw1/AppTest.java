@@ -7,35 +7,59 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.awt.geom.Point2D;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    @Test
+   public void testfindClosest() {
+      ArrayList<Point2D> array = new ArrayList<>();
+      array.add(new Point2D.Double(1,2));
+      array.add(new Point2D.Double(1,3));
+      array.add(new Point2D.Double(1,4));
+      array.add(new Point2D.Double(1,5));
+      assertEquals(App.calculateNearestEmergencies(array, new Point2D.Double(1,2), 1).get(0), new Point2D.Double(1,2));
     }
 
     @Test
-   public void testChanged() {
-      ArrayList<Integer> array = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-      ArrayList<Integer> result = new ArrayList<>(Arrays.asList(1, 2, 3, 5));
-      assertEquals(App.change(array, 4, 5), result );
+    public void testKisBiggerThanSize() {
+      ArrayList<Point2D> array = new ArrayList<>();
+      array.add(new Point2D.Double(1,2));
+      array.add(new Point2D.Double(1,3));
+      array.add(new Point2D.Double(1,4));
+      array.add(new Point2D.Double(1,5));
+      assertEquals(App.calculateNearestEmergencies(array, new Point2D.Double(1,1), 10),array);
     }
 
     @Test
-    public void testNoChange() {
-      ArrayList<Integer> array = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-      assertEquals(App.change(array, 5, 10),array);
+    public void testAllEmergenciesAreSame() {
+      ArrayList<Point2D> array = new ArrayList<>();
+      array.add(new Point2D.Double(1,2));
+      array.add(new Point2D.Double(1,2));
+      array.add(new Point2D.Double(1,2));
+      array.add(new Point2D.Double(1,2));
+      ArrayList<Point2D> result = new ArrayList<>();
+      result.add(new Point2D.Double(1,2));
+      result.add(new Point2D.Double(1,2));
+      assertEquals(App.calculateNearestEmergencies(array, new Point2D.Double(1,1), 2), result);
     }
 
     @Test
     public void testEmptyArray() {
-      ArrayList<Integer> array = new ArrayList<>();
-      assertEquals(App.change(array, 1,4),array);
+      ArrayList<Point2D> array = new ArrayList<>();
+      assertTrue(App.calculateNearestEmergencies(array, new Point2D.Double(1,1), 10).isEmpty());
+    }
+
+    @Test
+    public void testSize1() {
+      ArrayList<Point2D> array = new ArrayList<>();
+      array.add(new Point2D.Double(100,100));
+      assertEquals(App.calculateNearestEmergencies(array, new Point2D.Double(1,1), 10),array);
     }
 
     @Test
     public void testNull() {
-      assertNull(App.change(null, 1,1));
+      assertTrue(App.calculateNearestEmergencies(null, new Point2D.Double(1,1), 10).isEmpty());
     }
 
 }
