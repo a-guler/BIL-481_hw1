@@ -47,12 +47,7 @@ public class App {
       return closestEmergencies;
     }
     public static void main(String[] args) {
-
-        // int port = Integer.parseInt(System.getenv("PORT"));
         port(getHerokuAssignedPort());
-
-
-        // get("/", (req, res) -> "Hello, World");
 
         post("/", (req, res) -> {
         
