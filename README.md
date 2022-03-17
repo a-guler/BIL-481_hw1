@@ -3,4 +3,4 @@
 
 https://hidden-dawn-89179.herokuapp.com/
 
-![example input](https://www.hizliresim.com/f4rpj6o)
+![example input](https://www.hizliresim.com/f4rpj6o.png)
