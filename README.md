@@ -1,6 +1,6 @@
 # BIL-481_hw1
 [![Build Status](https://app.travis-ci.com/suleyman-guler/BIL-481_hw1.svg?branch=main)](https://app.travis-ci.com/suleyman-guler/BIL-481_hw1)
-[![suleyman-guler](https://app.circleci.com/gh/suleyman-guler/BIL-481_hw1.svg?style=shiled)](https://app.circleci.com/gh/suleyman-guler/BIL-481_hw1)
+[![CircleCI](https://circleci.com/gh/suleyman-guler/BIL-481_hw1/tree/main.svg?style=svg)](https://circleci.com/gh/suleyman-guler/BIL-481_hw1/tree/main)
 
 The website is reachable via: (https://hidden-dawn-89179.herokuapp.com/)
 
