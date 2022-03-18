@@ -19,7 +19,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
-      - run: echo "this is the test job"  
+      - run:  
         name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
