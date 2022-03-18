@@ -18,10 +18,11 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
-      - store_test_results:
-      path: test-results
       - checkout
       - run: echo "this is the test job"  
+
+      - store_test_results:
+        path: test-results
 
 # Orchestrate our job run sequence
 workflows:
