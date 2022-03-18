@@ -11,6 +11,8 @@ jobs:
     steps:
       - checkout
       - run: echo "this is the build job"
+      - store_test_results:
+      path: test-results
   test:
     docker:
       - image: cimg/openjdk:17.0.1
